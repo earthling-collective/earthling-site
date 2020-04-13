@@ -1,0 +1,37 @@
+.root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topMarquee {
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 0 0 rgba(255, 0, 0, 1);
+}
+
+.logoAnchor {
+  width: 90%;
+  height: 193px;
+  max-height: 20vh;
+}
+
+.bottomMarquee {
+}
+
+.davinci {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.davinciAnchor {
+  width: 70vw;
+  height: 70vh;
+}
