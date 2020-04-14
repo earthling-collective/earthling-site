@@ -39,62 +39,42 @@ export default () => {
           <Marquee />
         </div>
         <div className={styles.logo}>
-          <PinnedCanvasGroup layer="background" className={styles.logoAnchor}>
-            {({ position, size }) => {
-              const maxSize = { x: 1692, y: 194 };
-
-              const scaleX = size[0] / maxSize.x;
-              const scaleY = size[1] / maxSize.y;
-              const scale = _.min([scaleX, scaleY]) || 0;
-
-              const posX = (size[0] - maxSize.x * scale) / 2;
-              const posY = (size[1] - maxSize.y * scale) / 2;
-
-              return (
-                <group position={position}>
-                  <group position={[posX, -posY, 0]} scale={[scale, -scale, 1]}>
-                    <ambientLight />
-                    {_.map(logoSvg, (shape, i) => (
-                      <Path shape={shape} key={i} />
-                    ))}
-                  </group>
-                </group>
-              );
-            }}
+          <PinnedCanvasGroup
+            layer="background"
+            referenceSize={[1692, 495]}
+            className={styles.logoAnchor}
+          >
+            {() => (
+              <>
+                <ambientLight />
+                {_.map(logoSvg, (shape, i) => (
+                  <Path shape={shape} key={i} />
+                ))}
+              </>
+            )}
           </PinnedCanvasGroup>
         </div>
         <div className={styles.davinci}>
           <PinnedCanvasGroup
             layer="background"
+            referenceSize={[834.27, 834.27]}
             className={styles.davinciAnchor}
           >
-            {({ position, size }) => {
-              const maxSize = { x: 834.27, y: 834.27 };
-
-              const scaleX = size[0] / maxSize.x;
-              const scaleY = size[1] / maxSize.y;
-              const scale = _.min([scaleX, scaleY]) || 0;
-
-              const posX = (size[0] - maxSize.x * scale) / 2;
-              const posY = (size[1] - maxSize.y * scale) / 2;
-
-              return (
-                <group position={position}>
-                  <group position={[posX, -posY, 0]} scale={[scale, -scale, 1]}>
-                    <ambientLight />
-                    {_.map(davinciSvg, (shape, i) => (
-                      <Path shape={shape} key={i} />
-                    ))}
-                  </group>
-                </group>
-              );
-            }}
+            {() => (
+              <>
+                <ambientLight />
+                {_.map(davinciSvg, (shape, i) => (
+                  <Path shape={shape} key={i} />
+                ))}
+              </>
+            )}
           </PinnedCanvasGroup>
         </div>
         <div className={styles.bottomMarquee}>
           <Marquee direction={"toRight"} />
         </div>
       </div>
+      <div style={{ height: 400 }}>Heres more stuff</div>
     </TransitionChild>
   );
 };

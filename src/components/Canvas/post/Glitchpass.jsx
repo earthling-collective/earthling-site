@@ -57,8 +57,6 @@ var DigitalGlitch = {
     uniform float seed;
     uniform float seed_x;
     uniform float seed_y;
-    uniform float distortion_x;
-    uniform float distortion_y;
     uniform float col_s;
     varying vec2 vUv;
     float rand(vec2 co){
@@ -71,22 +69,14 @@ var DigitalGlitch = {
         float ys = floor(gl_FragCoord.y / 0.5);
         //based on staffantans glitch shader for unity https://github.com/staffantan/unityglitch
         vec4 normal = texture2D (tDisp, p*seed*seed);
-        if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {
-          if(seed_x>0.){
-            p.y = 1. - (p.y + distortion_y);
-          }
-          else {
-            p.y = distortion_y;
-          }
-        }
         p.x+=normal.x*seed_x*(seed/5.);
         p.y+=normal.y*seed_y*(seed/5.);
         //base from RGB shift shader
         vec2 offset = amount * vec2( cos(angle), sin(angle));
-        vec4 cr = texture2D(tDiffuse, p + offset);
-        vec4 cga = texture2D(tDiffuse, p);
+        vec4 cr = texture2D(tDiffuse, p );
+        vec4 cga = texture2D(tDiffuse, p + offset);
         vec4 cb = texture2D(tDiffuse, p - offset);
-        gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);
+        gl_FragColor = vec4(cr.r, cga.g, cb.b, cr.a);
       }
       else {
         gl_FragColor=texture2D (tDiffuse, vUv);
@@ -129,8 +119,6 @@ GlitchPass.prototype = Object.assign(Object.create(Pass.prototype), {
       this.uniforms["amount"].value =
         (0.015 + Math.sin(this.time * 40) * 0.001) * factor;
       this.uniforms["angle"].value = Math.sin(this.time) * Math.PI * factor;
-      this.uniforms["distortion_x"].value = 0;
-      this.uniforms["distortion_y"].value = 0;
       this.uniforms["seed_x"].value =
         Math.pow(Math.random(), 1000) * Math.sin(Math.random()) * 5;
       this.uniforms["seed_y"].value =

@@ -9051,6 +9051,13 @@ react-merge-refs@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.0.0.tgz#d6b297b9a62a266460a3c0d8b9d920731d8bbe63"
   integrity sha512-VkvWuCR5VoTjb+VYUcOjkFo66HDv1Hw8VjKcwQtWr2lJnT8g7epRRyfz8+Zkl2WhwqNeqR0gIe0XYrBa9ePeXg==
 
+react-page-visibility@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-page-visibility/-/react-page-visibility-6.0.0.tgz#9dcb9f08abcfeba2d0d8939d1e91a2aba1aaeec8"
+  integrity sha512-ccO0oJJWHALAsnWA2Atq/fOUjccpJo6s7wtWW1YC4pUPh2lSogCCfuJxn4rbz/LkteLC+mo2GdC3p8U3YRalhg==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-promise-suspense@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/react-promise-suspense/-/react-promise-suspense-0.3.2.tgz#202555b449cfb918f985aa93596029d842c4dcb4"

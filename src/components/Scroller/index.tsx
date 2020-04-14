@@ -6,10 +6,12 @@ import Canvas from "../Canvas";
 export type ScrollerContextType = {
   scroller?: Scroller;
   scrollY: number;
+  virtualScrollY: number;
 };
 
 const defaultValue: ScrollerContextType = {
   scrollY: 0,
+  virtualScrollY: 0,
 };
 
 export const ScrollerContext = createContext(defaultValue);
@@ -18,6 +20,7 @@ export default (props: { children: React.ReactNode }) => {
   const { children, ...passthrough } = props;
   const [scroller, setScroller] = useState<Scroller>();
   const [scrollY, setScrollY] = useState(0);
+  const [virtualScrollY, setVirtualScrollY] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,18 +30,23 @@ export default (props: { children: React.ReactNode }) => {
           height: "100vh",
         },
       });
-      scroller.onVirtual((p) => {
+      const unlisten = scroller.onScroll((p) => {
         setScrollY(p.y);
+      });
+      const unlistenVirtual = scroller.onVirtual((p) => {
+        setVirtualScrollY(p.y);
       });
       setScroller(scroller);
       return () => {
+        unlisten();
+        unlistenVirtual();
         scroller.destroy();
       };
     }
-  }, [rootRef, setScroller]);
+  }, [rootRef, setScroller, setScrollY]);
 
   return (
-    <ScrollerContext.Provider value={{ scroller, scrollY }}>
+    <ScrollerContext.Provider value={{ scroller, scrollY, virtualScrollY }}>
       <Canvas>
         <div className={styles.root} ref={rootRef} {...passthrough}>
           {children}

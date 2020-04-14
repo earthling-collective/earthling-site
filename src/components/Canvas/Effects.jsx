@@ -36,7 +36,6 @@ export default function Effects({ bloom = true }) {
         <unrealBloomPass attachArray="passes" args={[aspect, 0.4, 1, 0]} />
       )}
       <glitchPass attachArray="passes" factor={0.2} />
-      <filmPass attachArray="passes" args={[0.5, 0.1, 0.1, 0]} />
       <waterPass attachArray="passes" factor={0.5} />
     </effectComposer>
   );
