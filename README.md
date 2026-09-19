@@ -1,6 +1,6 @@
 # Earthling Digital
 
-The public website for Earthling Digital, an independent digital collective exploring open-source software, creative technology, and digital art.
+The public website for Earthling Digital, an independent creative agency working across brand, product design, engineering, and creative technology. The agency is structured as a collective and currently run by Steven Frady.
 
 The original site experiments are preserved in `archive/legacy`.
 
@@ -29,8 +29,10 @@ Keep the Vercel project root at the repository root. The checked-in Vercel confi
 
 ## Editing
 
-Page content and the collaboration destination live in `src/App.tsx`; the contact link currently points to Steven’s GitHub profile. `src/styles.css` contains the site theme and responsive layout. Fonts are self-hosted through `src/fonts.css`; licenses are in `public/licenses`. The artwork lives in `src/components/SignalField.tsx` and `signal-shaders.ts`, with a static SVG fallback in `public/media`.
+Page content lives in `src/App.tsx`. The service cards, process steps, studio principles, and ticker items are plain arrays at the top of that file. Outbound links (the Earthling GitHub organization, Earthling UI, and the founder site) are constants next to them.
 
-Add finished experiments to Open Work as they exist. Keep installations and exhibitions framed as a direction until there is real work to show.
+`src/styles.css` contains the site theme, the blueprint frame lines, the scroll-reveal system, and the responsive layout. Fonts are self-hosted through `src/fonts.css`; licenses are in `public/licenses`. The hero artwork lives in `src/components/SignalField.tsx` and `signal-shaders.ts`, with a static SVG fallback in `public/media`.
 
-Review visual changes at 1920 × 911 first, then at 1440, 1024, 768, 390, and 320 pixels wide. Preserve the artwork pause control, reduced-motion behavior, and static fallback.
+Add shipped client work to the Work section as it exists. Keep claims honest: the studio is new, and the page says so.
+
+Review visual changes at 1440 first, then at 1200, 960, 768, 390, and 320 pixels wide. Preserve the artwork motion toggle, reduced-motion behavior, and static fallback.

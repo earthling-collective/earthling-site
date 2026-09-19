@@ -1,10 +1,21 @@
-import { useState, useSyncExternalStore, type CSSProperties } from "react";
+import {
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from "react";
 import { Button } from "earthling-ui/button";
 import { Slider } from "earthling-ui/slider";
 import { Switch } from "earthling-ui/switch";
 import { SignalField } from "./components/SignalField";
 
-const contactUrl = "https://github.com/sfrady20";
+const githubUrl = "https://github.com/earthling-collective";
+const libraryUrl = "https://ui.earthling.dev";
+const librarySourceUrl = "https://github.com/earthling-dev/earthling-ui";
+const founderUrl = "https://stevenfrady.com";
+
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (notify: () => void) => {
   const query = window.matchMedia(motionQuery);
@@ -12,19 +23,117 @@ const subscribeMotion = (notify: () => void) => {
   return () => query.removeEventListener("change", notify);
 };
 
+interface Service {
+  index: string;
+  title: string;
+  copy: string;
+  span: "wide" | "narrow";
+  href?: string;
+}
+
+const services: Service[] = [
+  {
+    index: "01",
+    title: "Product & web design",
+    copy: "Interfaces, marketing sites, and design systems with a point of view. Designed in Figma and in code at the same time, so what you approve is what ships.",
+    span: "wide",
+  },
+  {
+    index: "02",
+    title: "Engineering",
+    copy: "React, TypeScript, and the modern web platform. Fast, accessible, and structured so the next person can pick it up without a handover call.",
+    span: "narrow",
+  },
+  {
+    index: "03",
+    title: "Creative technology",
+    copy: "WebGL, shaders, generative systems, and motion. The part of the web most teams leave on the table, used where it earns its place.",
+    span: "narrow",
+  },
+  {
+    index: "04",
+    title: "Brand & identity",
+    copy: "Names, marks, and visual language that hold up on a favicon and a billboard, and stay coherent once they meet real product surfaces.",
+    span: "narrow",
+  },
+  {
+    index: "05",
+    title: "Open source",
+    copy: "We give tools back. Earthling UI and the rest of our stack are open to use, fork, and remix, and we build client work on the same foundations.",
+    span: "narrow",
+    href: libraryUrl,
+  },
+];
+
+const process = [
+  {
+    step: "01",
+    title: "Discover",
+    copy: "A short, honest conversation about what you need, what you have, and what done looks like. No decks.",
+  },
+  {
+    step: "02",
+    title: "Design",
+    copy: "Direction first, then detail. You see real screens early and often, and every decision comes with a reason.",
+  },
+  {
+    step: "03",
+    title: "Build",
+    copy: "Production code from the first week. Staging links you can share, performance budgets we actually keep.",
+  },
+  {
+    step: "04",
+    title: "Ship & support",
+    copy: "Launch is a milestone, not the end. We stay close for the first stretch and hand over clean, documented work.",
+  },
+];
+
+const principles = [
+  {
+    title: "Small by design",
+    copy: "You work directly with the person doing the work. Nothing gets lost between an account manager and a production line.",
+  },
+  {
+    title: "Open by default",
+    copy: "Our tools are public, our process is legible, and you own everything we make for you.",
+  },
+  {
+    title: "Craft over volume",
+    copy: "A few projects at a time, each one taken seriously. We would rather do less and do it properly.",
+  },
+  {
+    title: "Built to grow",
+    copy: "Earthling is structured as a collective. As the work grows, the right designers, engineers, and artists plug in.",
+  },
+];
+
+const ticker = [
+  "Product design",
+  "Web engineering",
+  "Creative technology",
+  "Brand identity",
+  "Design systems",
+  "Open source",
+  "Motion",
+  "Interactive art",
+];
+
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return (
     <svg
-      width="18"
-      height="18"
+      className="arrow"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
     >
       <path
-        d={diagonal ? "M6 18 18 6M6 6h12v12" : "M4 12h16m-6-6 6 6-6 6"}
+        d={diagonal ? "M7 17 17 7M7 7h10v10" : "M4 12h16m-6-6 6 6-6 6"}
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -34,18 +143,108 @@ function Mark({ className = "" }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="32"
-      height="32"
+      width="28"
+      height="28"
       viewBox="0 0 40 40"
       fill="none"
       aria-hidden="true"
     >
-      <circle cx="20" cy="20" r="18" stroke="currentColor" />
+      <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="1.25" />
       <path
         d="M7.3 32.7V7.3h25.4v25.4H7.3ZM20 2v36M2 20h36"
         stroke="currentColor"
+        strokeWidth="1.25"
       />
     </svg>
+  );
+}
+
+function SectionHead({
+  index,
+  label,
+  title,
+  children,
+  id,
+}: {
+  index: string;
+  label: string;
+  title: ReactNode;
+  children?: ReactNode;
+  id: string;
+}) {
+  return (
+    <div className="section-head">
+      <p className="section-label mono" data-reveal>
+        <span className="section-index">{index}</span>
+        <span>{label}</span>
+      </p>
+      <h2 id={id} data-reveal style={{ "--delay": "80ms" } as CSSProperties}>
+        {title}
+      </h2>
+      {children ? (
+        <div
+          className="section-intro"
+          data-reveal
+          style={{ "--delay": "160ms" } as CSSProperties}
+        >
+          {children}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function useSpotlight() {
+  return (event: ReactPointerEvent<HTMLElement>) => {
+    const target = event.currentTarget;
+    const bounds = target.getBoundingClientRect();
+    target.style.setProperty("--mx", `${event.clientX - bounds.left}px`);
+    target.style.setProperty("--my", `${event.clientY - bounds.top}px`);
+  };
+}
+
+function ServiceCard({
+  index,
+  title,
+  copy,
+  span,
+  href,
+  delay,
+}: Service & { delay: number }) {
+  const onPointerMove = useSpotlight();
+  const content = (
+    <>
+      <span className="card-index mono">{index}</span>
+      <h3>
+        {title}
+        {href ? <Arrow diagonal /> : null}
+      </h3>
+      <p>{copy}</p>
+    </>
+  );
+  const style = { "--delay": `${delay}ms` } as CSSProperties;
+  if (href) {
+    return (
+      <a
+        className={`card card-${span} card-link`}
+        href={href}
+        onPointerMove={onPointerMove}
+        data-reveal
+        style={style}
+      >
+        {content}
+      </a>
+    );
+  }
+  return (
+    <article
+      className={`card card-${span}`}
+      onPointerMove={onPointerMove}
+      data-reveal
+      style={style}
+    >
+      {content}
+    </article>
   );
 }
 
@@ -53,31 +252,28 @@ function LibrarySpecimen() {
   const [radius, setRadius] = useState([24]);
   const [filled, setFilled] = useState(true);
   return (
-    <div className="specimen">
+    <div className="specimen" data-reveal>
       <div className="specimen-heading mono">
-        <span>EARTHLING UI</span>
-        <span>LIVE SPECIMEN</span>
+        <span>Earthling UI</span>
+        <span>
+          <span className="status-dot" aria-hidden="true" />
+          Live specimen
+        </span>
       </div>
       <div
         className="specimen-stage"
         style={{ "--radius-control": radius[0] + "px" } as CSSProperties}
       >
-        <span className="specimen-cross cross-a" aria-hidden="true">
-          +
-        </span>
-        <span className="specimen-cross cross-b" aria-hidden="true">
-          +
-        </span>
         <Button asChild size="lg" material={filled ? "paper" : "outline"}>
-          <a href="https://ui.earthling.dev">
+          <a href={libraryUrl}>
             Make it yours <Arrow diagonal />
           </a>
         </Button>
       </div>
       <div className="specimen-controls">
         <div className="radius-label mono">
-          <span id="radius-label">RADIUS</span>
-          <output>{radius[0]} PX</output>
+          <span id="radius-label">Radius</span>
+          <output>{radius[0]} px</output>
         </div>
         <Slider
           className="radius-slider"
@@ -89,7 +285,7 @@ function LibrarySpecimen() {
           thumbLabels={["Button corner radius"]}
         />
         <label className="fill-control">
-          <span className="mono">SOLID FILL</span>
+          <span className="mono">Solid fill</span>
           <Switch
             aria-label="Solid fill"
             checked={filled}
@@ -103,6 +299,42 @@ function LibrarySpecimen() {
   );
 }
 
+function useReveal() {
+  useEffect(() => {
+    const elements = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-reveal]"),
+    );
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => element.setAttribute("data-reveal", "in"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).setAttribute("data-reveal", "in");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
+    );
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+}
+
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 12);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+  return scrolled;
+}
+
 export default function App() {
   const reducedMotion = useSyncExternalStore(
     subscribeMotion,
@@ -114,88 +346,117 @@ export default function App() {
     "unavailable",
   );
   const paused = motionOverride ?? reducedMotion;
+  const scrolled = useScrolled();
+  useReveal();
 
   return (
     <>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <header className="site-header page-gutter">
-        <a className="identity" href="#top" aria-label="Earthling Digital home">
-          <Mark />
-          <span className="identity-name">
-            earthling<span className="identity-sub">digital</span>
-          </span>
-        </a>
-        <span className="header-note mono">INDEPENDENT BY NATURE.</span>
-        <nav aria-label="Main navigation">
-          <a href="#work">Open work</a>
-          <a href="#about">Our orbit</a>
-          <Button asChild material="outline" className="header-contact">
-            <a href="#contact">
-              Get in touch <Arrow diagonal />
+      <div className="frame-lines" aria-hidden="true">
+        <div className="container" />
+      </div>
+      <header className="site-header" data-scrolled={scrolled || undefined}>
+        <div className="container header-inner">
+          <a className="identity" href="#top" aria-label="Earthling Digital home">
+            <Mark />
+            <span className="identity-name">
+              earthling<span className="identity-sub">digital</span>
+            </span>
+          </a>
+          <nav aria-label="Main navigation">
+            <a href="#services">Services</a>
+            <a href="#work">Work</a>
+            <a href="#studio">Studio</a>
+          </nav>
+          <div className="header-actions">
+            <a className="header-github" href={githubUrl} aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.3 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"
+                />
+              </svg>
             </a>
-          </Button>
-        </nav>
+            <Button asChild size="sm" className="header-cta">
+              <a href="#contact">
+                Start a project <Arrow />
+              </a>
+            </Button>
+          </div>
+        </div>
       </header>
+
       <main id="main">
-        <section className="hero" id="top" aria-labelledby="hero-title">
-          <div className="hero-art">
+        <section
+          className="hero"
+          id="top"
+          aria-labelledby="hero-title"
+        >
+          <div className="hero-art" aria-hidden="true">
             <SignalField paused={paused} onStatusChange={setFieldStatus} />
           </div>
-          <div className="hero-heading page-gutter">
-            <p className="hero-eyebrow mono">
-              <span className="signal-dot" />
-              AN INDEPENDENT DIGITAL COLLECTIVE
+          <div className="container hero-content">
+            <p className="eyebrow mono hero-in" style={{ "--i": 0 } as CSSProperties}>
+              <span className="status-dot" aria-hidden="true" />
+              Independent creative agency
             </p>
-            <h1 id="hero-title">
-              A different
+            <h1
+              id="hero-title"
+              className="hero-in"
+              style={{ "--i": 1 } as CSSProperties}
+            >
+              Digital products
               <br />
-              <span>kind of signal.</span>
+              <span>with a pulse.</span>
             </h1>
-            <p className="hero-description">
-              Open tools. Uncommon ideas.
-              <br />
-              At the edges of design, technology, and art.
+            <p
+              className="hero-description hero-in"
+              style={{ "--i": 2 } as CSSProperties}
+            >
+              Earthling is a creative agency working across brand, product
+              design, and engineering. We build websites, interfaces, and
+              interactive experiences that feel considered, fast, and alive.
             </p>
-            <div className="hero-actions">
-              <Button asChild size="lg">
-                <a href="#work">
-                  Explore our work <Arrow />
+            <div className="hero-actions hero-in" style={{ "--i": 3 } as CSSProperties}>
+              <Button asChild size="lg" className="cta-primary">
+                <a href="#contact">
+                  Start a project <Arrow />
                 </a>
               </Button>
-              <a href="#about" className="text-link">
-                Step inside <Arrow diagonal />
+              <a href="#work" className="text-link">
+                See the work <Arrow diagonal />
               </a>
             </div>
           </div>
-          <div className="hero-bottom page-gutter">
-            <a className="scroll-cue mono" href="#about">
+          <div className="container hero-bottom">
+            <a className="scroll-cue mono" href="#services">
               <span className="scroll-icon" aria-hidden="true">
-                ↓
+                <span />
               </span>
-              <span>SCROLL TO EXPLORE</span>
+              <span>Scroll</span>
             </a>
-            <div className="field-caption">
-              <div>
-                <span className="mono">FIELD STUDY — 001</span>
-                <p>Interference</p>
-              </div>
+            <div className="hero-meta mono">
+              <span className="hero-status">
+                <span className="status-dot status-live" aria-hidden="true" />
+                Open for new projects
+              </span>
               {fieldStatus === "ready" ? (
-                <Button
-                  material="outline"
-                  shape="icon"
+                <button
+                  type="button"
                   className="motion-control"
                   onClick={() => setMotionOverride(!paused)}
+                  aria-pressed={!paused}
                   aria-label={
                     paused
-                      ? "Play artwork animation"
-                      : "Pause artwork animation"
+                      ? "Play background animation"
+                      : "Pause background animation"
                   }
                 >
                   <svg
-                    width="14"
-                    height="14"
+                    width="12"
+                    height="12"
                     viewBox="0 0 16 16"
                     fill="none"
                     aria-hidden="true"
@@ -206,147 +467,307 @@ export default function App() {
                       <path
                         d="M5 3v10M11 3v10"
                         stroke="currentColor"
-                        strokeWidth="1.5"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
                       />
                     )}
                   </svg>
-                </Button>
-              ) : (
-                <span className="motion-fallback mono">STILL</span>
-              )}
+                  <span>Motion {paused ? "off" : "on"}</span>
+                </button>
+              ) : null}
             </div>
           </div>
         </section>
-        <section
-          className="about section page-gutter"
-          id="about"
-          aria-labelledby="about-title"
-        >
-          <div className="section-label mono">
-            <span>01 / OUR ORBIT</span>
-            <span className="status-dot" aria-hidden="true" />
+
+        <div className="ticker" aria-hidden="true">
+          <div className="ticker-track">
+            {[0, 1].map((copy) => (
+              <ul key={copy}>
+                {ticker.map((item) => (
+                  <li key={item}>
+                    <span className="ticker-dot" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
-          <div className="about-content">
-            <h2 id="about-title">
-              Serious about craft.
-              <br />
-              <span>Curious about everything.</span>
-            </h2>
-            <div className="about-copy">
+        </div>
+
+        <section
+          className="section services"
+          id="services"
+          aria-labelledby="services-title"
+        >
+          <div className="container">
+            <SectionHead
+              index="01"
+              label="Services"
+              id="services-title"
+              title={
+                <>
+                  Everything from the first sketch
+                  <br />
+                  <span>to the last deploy.</span>
+                </>
+              }
+            >
               <p>
-                Earthling Digital is an independent collective taking shape at
-                the intersection of open source, design, and technical artistry.
+                One team across design and engineering, so nothing gets lost in
+                translation between the two.
               </p>
-              <p>
-                We make tools to build with and experiments to get lost in.
-                Starting on the web. Curious about what happens beyond the
-                screen.
-              </p>
-            </div>
-            <div className="directions mono" aria-label="Areas of interest">
-              <span>OPEN SOURCE</span>
-              <span>CREATIVE TECHNOLOGY</span>
-              <span>ART & INSTALLATION</span>
+            </SectionHead>
+            <div className="bento">
+              {services.map((service, index) => (
+                <ServiceCard
+                  key={service.index}
+                  {...service}
+                  delay={index * 70}
+                />
+              ))}
             </div>
           </div>
         </section>
-        <section
-          className="work section page-gutter"
-          id="work"
-          aria-labelledby="work-title"
-        >
-          <div className="section-label mono">
-            <span>02 / OPEN WORK</span>
-            <span>AN ONGOING PRACTICE</span>
-          </div>
-          <div className="project">
-            <div className="project-copy">
-              <div className="project-meta mono">
-                <span>001</span>
-                <span>TOOLS / OPEN SOURCE</span>
-              </div>
-              <h2 id="work-title">
-                Earthling UI<span aria-hidden="true">↗</span>
-              </h2>
+
+        <section className="section work" id="work" aria-labelledby="work-title">
+          <div className="container">
+            <SectionHead
+              index="02"
+              label="Work"
+              id="work-title"
+              title={
+                <>
+                  Built in the open,
+                  <br />
+                  <span>used in production.</span>
+                </>
+              }
+            >
               <p>
-                A considered foundation for building interfaces. Import the
-                components or take the source and make them your own.
+                Earthling is a new studio, and the client roster is growing.
+                Here is what we have shipped so far.
               </p>
-              <div className="project-links">
-                <Button asChild material="outline" size="lg">
-                  <a href="https://ui.earthling.dev">
-                    Explore the library <Arrow diagonal />
-                  </a>
-                </Button>
-                <a
-                  className="text-link"
-                  href="https://github.com/earthling-dev/earthling-ui"
+            </SectionHead>
+            <div className="project">
+              <div className="project-copy">
+                <div className="project-meta mono" data-reveal>
+                  <span>001</span>
+                  <span>Design system</span>
+                  <span>Open source</span>
+                </div>
+                <h3 data-reveal style={{ "--delay": "60ms" } as CSSProperties}>
+                  Earthling UI
+                </h3>
+                <p data-reveal style={{ "--delay": "120ms" } as CSSProperties}>
+                  A component library and design system for React. Accessible
+                  primitives, a real theming model, and source you can take and
+                  make your own. It is the foundation under this site and
+                  everything we build for clients.
+                </p>
+                <div
+                  className="project-links"
+                  data-reveal
+                  style={{ "--delay": "180ms" } as CSSProperties}
                 >
-                  Source <Arrow diagonal />
+                  <Button asChild material="outline" size="lg">
+                    <a href={libraryUrl}>
+                      Explore the library <Arrow diagonal />
+                    </a>
+                  </Button>
+                  <a className="text-link" href={librarySourceUrl}>
+                    Source <Arrow diagonal />
+                  </a>
+                </div>
+                <dl
+                  className="project-facts mono"
+                  data-reveal
+                  style={{ "--delay": "240ms" } as CSSProperties}
+                >
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>React, Tailwind, Radix</dd>
+                  </div>
+                  <div>
+                    <dt>License</dt>
+                    <dd>MIT</dd>
+                  </div>
+                  <div>
+                    <dt>Status</dt>
+                    <dd>Active</dd>
+                  </div>
+                </dl>
+              </div>
+              <LibrarySpecimen />
+            </div>
+            <div className="work-note" data-reveal>
+              <span className="mono">002 — Your project</span>
+              <p>
+                The next case study on this page could be yours.{" "}
+                <a href="#contact" className="inline-link">
+                  Let&rsquo;s talk
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="section process"
+          id="process"
+          aria-labelledby="process-title"
+        >
+          <div className="container">
+            <SectionHead
+              index="03"
+              label="Process"
+              id="process-title"
+              title={
+                <>
+                  Clear steps,
+                  <br />
+                  <span>no ceremony.</span>
+                </>
+              }
+            />
+            <ol className="steps">
+              {process.map((item, index) => (
+                <li
+                  key={item.step}
+                  data-reveal
+                  style={{ "--delay": `${index * 80}ms` } as CSSProperties}
+                >
+                  <span className="mono step-index">{item.step}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section
+          className="section studio"
+          id="studio"
+          aria-labelledby="studio-title"
+        >
+          <div className="container">
+            <SectionHead
+              index="04"
+              label="Studio"
+              id="studio-title"
+              title={
+                <>
+                  Independent
+                  <br />
+                  <span>by nature.</span>
+                </>
+              }
+            />
+            <div className="studio-grid">
+              <div className="studio-copy" data-reveal>
+                <p>
+                  Earthling Digital is an independent creative agency founded
+                  by Steven Frady, a designer and engineer who works across the
+                  whole stack, from the first sketch to the last deploy.
+                </p>
+                <p>
+                  It is built as a collective. Today that is one person. The
+                  structure exists so that the right collaborators can plug in
+                  as the work grows, without the overhead of a traditional
+                  agency.
+                </p>
+                <a className="text-link" href={founderUrl}>
+                  Meet the founder <Arrow diagonal />
                 </a>
               </div>
-              <span className="project-footnote mono">
-                BUILT TO BE USED. MADE TO BE CHANGED.
-              </span>
+              <ul className="principles">
+                {principles.map((principle, index) => (
+                  <li
+                    key={principle.title}
+                    data-reveal
+                    style={{ "--delay": `${index * 70}ms` } as CSSProperties}
+                  >
+                    <h3>{principle.title}</h3>
+                    <p>{principle.copy}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <LibrarySpecimen />
           </div>
-          <a className="study-row" href="#top">
-            <span className="mono">002</span>
-            <div>
-              <h3>Interference</h3>
-              <p>An ongoing exploration of light, frequency, and form.</p>
-            </div>
-            <span className="mono study-type">WEBGL / FIELD STUDY</span>
-            <Arrow />
-          </a>
         </section>
+
         <section
-          className="contact section page-gutter"
+          className="section contact"
           id="contact"
           aria-labelledby="contact-title"
         >
-          <div className="section-label mono">
-            <span>03 / A SHARED FREQUENCY</span>
-            <span>GOOD THINGS START SMALL.</span>
-          </div>
-          <div className="contact-content">
-            <Mark className="contact-mark" />
-            <h2 id="contact-title">
-              For the ones
+          <div className="container contact-inner">
+            <p className="section-label mono" data-reveal>
+              <span className="section-index">05</span>
+              <span>Contact</span>
+            </p>
+            <h2
+              id="contact-title"
+              data-reveal
+              style={{ "--delay": "80ms" } as CSSProperties}
+            >
+              Let&rsquo;s make something
               <br />
-              who feel it, too.
+              <span>worth remembering.</span>
             </h2>
-            <div className="contact-copy">
-              <p>
-                Designers, developers, artists, and people who don’t fit neatly
-                into one box.
-              </p>
-              <p>
-                If you’re drawn to open tools, unusual interactions, or ideas
-                that deserve a physical space, there may be something here to
-                make together.
-              </p>
-              <Button asChild size="lg">
-                <a href={contactUrl}>
-                  Find me on GitHub <Arrow diagonal />
+            <div
+              className="contact-actions"
+              data-reveal
+              style={{ "--delay": "160ms" } as CSSProperties}
+            >
+              <Button asChild size="lg" className="cta-primary">
+                <a href={githubUrl}>
+                  Find us on GitHub <Arrow diagonal />
                 </a>
               </Button>
+              <p>
+                Clients, collaborators, and people who don&rsquo;t fit neatly
+                into one box. If you are drawn to open tools and unusual
+                interactions, there is probably something here to make
+                together.
+              </p>
             </div>
           </div>
         </section>
       </main>
-      <footer className="site-footer page-gutter">
-        <a href="#top" className="footer-brand">
-          earthling digital <span aria-hidden="true">↗</span>
-        </a>
-        <p className="mono">AN INDEPENDENT COLLECTIVE, IN FORMATION.</p>
-        <a
-          href="https://github.com/earthling-dev/earthling-ui"
-          className="text-link"
-        >
-          Made with Earthling UI <Arrow diagonal />
-        </a>
+
+      <footer className="site-footer">
+        <div className="container footer-inner">
+          <div className="footer-brand">
+            <a href="#top" className="identity" aria-label="Back to top">
+              <Mark />
+              <span className="identity-name">
+                earthling<span className="identity-sub">digital</span>
+              </span>
+            </a>
+            <p className="mono">Independent by nature.</p>
+          </div>
+          <nav className="footer-nav" aria-label="Footer">
+            <div>
+              <span className="mono footer-heading">Site</span>
+              <a href="#services">Services</a>
+              <a href="#work">Work</a>
+              <a href="#studio">Studio</a>
+              <a href="#contact">Contact</a>
+            </div>
+            <div>
+              <span className="mono footer-heading">Elsewhere</span>
+              <a href={githubUrl}>GitHub</a>
+              <a href={libraryUrl}>Earthling UI</a>
+              <a href={founderUrl}>Steven Frady</a>
+            </div>
+          </nav>
+          <p className="footer-legal mono">
+            <span>&copy; {new Date().getFullYear()} Earthling Digital</span>
+            <span>Made with Earthling UI</span>
+          </p>
+        </div>
       </footer>
     </>
   );

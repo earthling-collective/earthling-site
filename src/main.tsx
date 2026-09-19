@@ -3,6 +3,10 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./styles.css";
 
+// Marks that scripting is available so scroll-reveal styles can apply.
+// Without JS (or before hydration) everything stays visible.
+document.documentElement.classList.add("js");
+
 const root = document.getElementById("root");
 
 if (!root) {

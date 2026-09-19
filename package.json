@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "The public website for Earthling Digital, an independent digital collective.",
+  "description": "The public website for Earthling Digital, an independent creative agency.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && node scripts/build.mjs",
