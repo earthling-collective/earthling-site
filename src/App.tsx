@@ -15,6 +15,9 @@ const githubUrl = "https://github.com/earthling-collective";
 const libraryUrl = "https://ui.earthling.dev";
 const librarySourceUrl = "https://github.com/earthling-dev/earthling-ui";
 const founderUrl = "https://stevenfrady.com";
+const contactEmail = "contact@earthling.dev";
+const contactMailto = `mailto:${contactEmail}?subject=${encodeURIComponent("New project")}`;
+const agentsUrl = "/llms.txt";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (notify: () => void) => {
@@ -27,40 +30,46 @@ interface Service {
   index: string;
   title: string;
   copy: string;
-  span: "wide" | "narrow";
+  span: "wide" | "narrow" | "half";
   href?: string;
 }
 
 const services: Service[] = [
   {
     index: "01",
-    title: "Product & web design",
-    copy: "Interfaces, marketing sites, and design systems with a point of view. Designed in Figma and in code at the same time, so what you approve is what ships.",
+    title: "AI workflows & automation",
+    copy: "We build with agents, not just for them. Research, prototyping, testing, and the long tail of production chores run through automated pipelines, so people spend their time on judgment and taste. The loop ships every day, not every sprint.",
     span: "wide",
   },
   {
     index: "02",
-    title: "Engineering",
-    copy: "React, TypeScript, and the modern web platform. Fast, accessible, and structured so the next person can pick it up without a handover call.",
+    title: "Product & web design",
+    copy: "Interfaces, marketing sites, and design systems with a point of view. Designed in code from day one, with iteration measured in minutes rather than review cycles.",
     span: "narrow",
   },
   {
     index: "03",
-    title: "Creative technology",
-    copy: "WebGL, shaders, generative systems, and motion. The part of the web most teams leave on the table, used where it earns its place.",
+    title: "Engineering",
+    copy: "React, TypeScript, and the modern web platform. Fast, accessible, and structured so the next person, or the next agent, can pick it up without a handover call.",
     span: "narrow",
   },
   {
     index: "04",
-    title: "Brand & identity",
-    copy: "Names, marks, and visual language that hold up on a favicon and a billboard, and stay coherent once they meet real product surfaces.",
-    span: "narrow",
+    title: "Creative technology",
+    copy: "WebGL, shaders, generative systems, and motion. The part of the web most teams leave on the table, used where it earns its place.",
+    span: "wide",
   },
   {
     index: "05",
+    title: "Brand & identity",
+    copy: "Names, marks, and visual language that hold up on a favicon and a billboard, and stay coherent once they meet real product surfaces.",
+    span: "half",
+  },
+  {
+    index: "06",
     title: "Open source",
     copy: "We give tools back. Earthling UI and the rest of our stack are open to use, fork, and remix, and we build client work on the same foundations.",
-    span: "narrow",
+    span: "half",
     href: libraryUrl,
   },
 ];
@@ -69,23 +78,33 @@ const process = [
   {
     step: "01",
     title: "Discover",
-    copy: "A short, honest conversation about what you need, what you have, and what done looks like. No decks.",
+    copy: "A short, honest conversation about what you need, what you have, and what done looks like. No decks, and no discovery phase that lasts a quarter.",
   },
   {
     step: "02",
-    title: "Design",
-    copy: "Direction first, then detail. You see real screens early and often, and every decision comes with a reason.",
+    title: "Design & prototype",
+    copy: "Direction first, then detail. A working prototype in the first days, real screens every day after, and every decision comes with a reason.",
   },
   {
     step: "03",
     title: "Build",
-    copy: "Production code from the first week. Staging links you can share, performance budgets we actually keep.",
+    copy: "Production code from the first week. Agents handle the repetitive parts and people review everything that ships. Staging links you can share, performance budgets we actually keep.",
   },
   {
     step: "04",
-    title: "Ship & support",
-    copy: "Launch is a milestone, not the end. We stay close for the first stretch and hand over clean, documented work.",
+    title: "Ship & evolve",
+    copy: "Launch is a milestone, not the end. Automation keeps the product healthy, and we stay close so it keeps moving after the first release.",
   },
+];
+
+const shifts = [
+  { from: "Quarterly roadmaps", to: "Releases every day" },
+  { from: "Design handed off to engineering", to: "One loop, designed in code" },
+  {
+    from: "Ticket queues and status meetings",
+    to: "Direct access to the people building",
+  },
+  { from: "Static deliverables", to: "Living systems that agents can maintain" },
 ];
 
 const principles = [
@@ -98,8 +117,8 @@ const principles = [
     copy: "Our tools are public, our process is legible, and you own everything we make for you.",
   },
   {
-    title: "Craft over volume",
-    copy: "A few projects at a time, each one taken seriously. We would rather do less and do it properly.",
+    title: "AI-native, human-led",
+    copy: "Agents do the heavy lifting and people make the calls. Speed without taste is just noise, so every detail still gets taken seriously.",
   },
   {
     title: "Built to grow",
@@ -108,12 +127,15 @@ const principles = [
 ];
 
 const ticker = [
+  "AI workflows",
+  "Automation",
   "Product design",
   "Web engineering",
   "Creative technology",
   "Brand identity",
   "Design systems",
   "Open source",
+  "Agentic tooling",
   "Motion",
   "Interactive art",
 ];
@@ -400,7 +422,7 @@ export default function App() {
           <div className="container hero-content">
             <p className="eyebrow mono hero-in" style={{ "--i": 0 } as CSSProperties}>
               <span className="status-dot" aria-hidden="true" />
-              Independent creative agency
+              AI-native creative agency
             </p>
             <h1
               id="hero-title"
@@ -416,7 +438,8 @@ export default function App() {
               style={{ "--i": 2 } as CSSProperties}
             >
               Earthling is a creative agency working across brand, product
-              design, and engineering. We build websites, interfaces, and
+              design, and engineering. We pair human taste with fast,
+              agent-driven workflows to ship websites, interfaces, and
               interactive experiences that feel considered, fast, and alive.
             </p>
             <div className="hero-actions hero-in" style={{ "--i": 3 } as CSSProperties}>
@@ -513,8 +536,9 @@ export default function App() {
               }
             >
               <p>
-                One team across design and engineering, so nothing gets lost in
-                translation between the two.
+                One team across design and engineering, with agents in the
+                loop, so nothing gets lost in translation and nothing waits in
+                a queue.
               </p>
             </SectionHead>
             <div className="bento">
@@ -529,10 +553,56 @@ export default function App() {
           </div>
         </section>
 
-        <section className="section work" id="work" aria-labelledby="work-title">
+        <section
+          className="section shift"
+          id="approach"
+          aria-labelledby="shift-title"
+        >
           <div className="container">
             <SectionHead
               index="02"
+              label="Approach"
+              id="shift-title"
+              title={
+                <>
+                  The old way of building
+                  <br />
+                  <span>software is optional now.</span>
+                </>
+              }
+            >
+              <p>
+                Most of what made software slow was process, not work. With
+                agents in the loop, a small team can skip the parts that only
+                existed to coordinate a large one.
+              </p>
+            </SectionHead>
+            <ul className="shift-list">
+              {shifts.map((shift, index) => (
+                <li
+                  key={shift.to}
+                  data-reveal
+                  style={{ "--delay": `${index * 70}ms` } as CSSProperties}
+                >
+                  <span className="shift-from">
+                    <span className="mono">Before</span>
+                    {shift.from}
+                  </span>
+                  <Arrow />
+                  <span className="shift-to">
+                    <span className="mono">Now</span>
+                    {shift.to}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="section work" id="work" aria-labelledby="work-title">
+          <div className="container">
+            <SectionHead
+              index="03"
               label="Work"
               id="work-title"
               title={
@@ -545,7 +615,8 @@ export default function App() {
             >
               <p>
                 Earthling is a new studio, and the client roster is growing.
-                Here is what we have shipped so far.
+                Here is what we have shipped so far, built the same way we
+                build for clients.
               </p>
             </SectionHead>
             <div className="project">
@@ -619,7 +690,7 @@ export default function App() {
         >
           <div className="container">
             <SectionHead
-              index="03"
+              index="04"
               label="Process"
               id="process-title"
               title={
@@ -653,7 +724,7 @@ export default function App() {
         >
           <div className="container">
             <SectionHead
-              index="04"
+              index="05"
               label="Studio"
               id="studio-title"
               title={
@@ -672,10 +743,16 @@ export default function App() {
                   whole stack, from the first sketch to the last deploy.
                 </p>
                 <p>
+                  It runs on a simple premise: a small team with the right
+                  tools now moves faster than a large one with the old process.
+                  No ticket queues, no quarter-long roadmaps, no waiting for a
+                  handoff. Tight loops, real feedback, and work that ships.
+                </p>
+                <p>
                   It is built as a collective. Today that is one person. The
-                  structure exists so that the right collaborators can plug in
-                  as the work grows, without the overhead of a traditional
-                  agency.
+                  structure exists so that the right collaborators, human and
+                  otherwise, can plug in as the work grows, without the overhead
+                  of a traditional agency.
                 </p>
                 <a className="text-link" href={founderUrl}>
                   Meet the founder <Arrow diagonal />
@@ -704,7 +781,7 @@ export default function App() {
         >
           <div className="container contact-inner">
             <p className="section-label mono" data-reveal>
-              <span className="section-index">05</span>
+              <span className="section-index">06</span>
               <span>Contact</span>
             </p>
             <h2
@@ -721,15 +798,20 @@ export default function App() {
               data-reveal
               style={{ "--delay": "160ms" } as CSSProperties}
             >
-              <Button asChild size="lg" className="cta-primary">
-                <a href={githubUrl}>
-                  Find us on GitHub <Arrow diagonal />
+              <div className="contact-buttons">
+                <Button asChild size="lg" className="cta-primary">
+                  <a href={contactMailto}>
+                    Email {contactEmail} <Arrow />
+                  </a>
+                </Button>
+                <a className="text-link" href={githubUrl}>
+                  GitHub <Arrow diagonal />
                 </a>
-              </Button>
+              </div>
               <p>
                 Clients, collaborators, and people who don&rsquo;t fit neatly
-                into one box. If you are drawn to open tools and unusual
-                interactions, there is probably something here to make
+                into one box. If you are drawn to open tools, fast loops, and
+                unusual interactions, there is probably something here to make
                 together.
               </p>
             </div>
@@ -758,13 +840,14 @@ export default function App() {
             </div>
             <div>
               <span className="mono footer-heading">Elsewhere</span>
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
               <a href={githubUrl}>GitHub</a>
               <a href={libraryUrl}>Earthling UI</a>
-              <a href={founderUrl}>Steven Frady</a>
             </div>
           </nav>
           <p className="footer-legal mono">
             <span>&copy; {new Date().getFullYear()} Earthling Digital</span>
+            <a href={agentsUrl}>Agents: read /llms.txt</a>
             <span>Made with Earthling UI</span>
           </p>
         </div>

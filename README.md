@@ -1,6 +1,6 @@
 # Earthling Digital
 
-The public website for Earthling Digital, an independent creative agency working across brand, product design, engineering, and creative technology. The agency is structured as a collective and currently run by Steven Frady.
+The public website for Earthling Digital, an independent, AI-native creative agency working across brand, product design, engineering, and creative technology. The agency is structured as a collective and currently run by Steven Frady.
 
 The original site experiments are preserved in `archive/legacy`.
 
@@ -29,7 +29,11 @@ Keep the Vercel project root at the repository root. The checked-in Vercel confi
 
 ## Editing
 
-Page content lives in `src/App.tsx`. The service cards, process steps, studio principles, and ticker items are plain arrays at the top of that file. Outbound links (the Earthling GitHub organization, Earthling UI, and the founder site) are constants next to them.
+Page content lives in `src/App.tsx`. The service cards, before/now shifts, process steps, studio principles, and ticker items are plain arrays at the top of that file. Outbound links and the contact address (contact@earthling.dev) are constants next to them.
+
+## Agents and crawlers
+
+The site is meant to be readable by agents as well as people. `public/llms.txt` is a plain-text summary of the agency, its services, and how to get in touch; keep it in sync when the page copy changes. `public/robots.txt` allows all crawlers and points to `public/sitemap.xml`, and `index.html` carries schema.org Organization JSON-LD plus a canonical URL. The canonical URL is currently `https://earthling.dev`; change it in `index.html`, `robots.txt`, `sitemap.xml`, and `llms.txt` if the site lives somewhere else.
 
 `src/styles.css` contains the site theme, the blueprint frame lines, the scroll-reveal system, and the responsive layout. Fonts are self-hosted through `src/fonts.css`; licenses are in `public/licenses`. The hero artwork lives in `src/components/SignalField.tsx` and `signal-shaders.ts`, with a static SVG fallback in `public/media`.
 

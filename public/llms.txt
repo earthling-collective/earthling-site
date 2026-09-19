@@ -1,0 +1,47 @@
+# Earthling Digital
+
+> Earthling Digital is an independent, AI-native creative agency working across brand, product design, engineering, and creative technology. It pairs human taste with fast, agent-driven workflows to ship websites, interfaces, and interactive experiences.
+
+- Site: https://earthling.dev
+- Contact: contact@earthling.dev
+- GitHub: https://github.com/earthling-collective
+- Open-source design system: https://ui.earthling.dev (source: https://github.com/earthling-dev/earthling-ui, MIT)
+- Status: open for new projects
+- Structure: an agency built as a collective. Currently run by its founder, Steven Frady, with collaborators joining as work grows.
+
+## Services
+
+- AI workflows & automation: builds with agents, not just for them. Research, prototyping, testing, and production chores run through automated pipelines so people focus on judgment and taste.
+- Product & web design: interfaces, marketing sites, and design systems, designed in code from day one.
+- Engineering: React, TypeScript, and the modern web platform. Fast, accessible, and structured so the next person or agent can pick it up.
+- Creative technology: WebGL, shaders, generative systems, and motion.
+- Brand & identity: names, marks, and visual language that hold up across product surfaces.
+- Open source: Earthling UI and the rest of the stack are open to use, fork, and remix.
+
+## Approach
+
+- Releases every day instead of quarterly roadmaps.
+- One loop, designed in code, instead of design handed off to engineering.
+- Direct access to the people building instead of ticket queues and status meetings.
+- Living systems that agents can maintain instead of static deliverables.
+
+## Process
+
+1. Discover: a short conversation about needs, existing assets, and what done looks like.
+2. Design & prototype: direction first, then detail, with a working prototype in the first days.
+3. Build: production code from the first week. Agents handle repetitive work; people review everything that ships.
+4. Ship & evolve: automation keeps the product healthy after launch, with continued support.
+
+## Principles
+
+- Small by design: clients work directly with the person doing the work.
+- Open by default: public tools, legible process, and clients own everything made for them.
+- AI-native, human-led: agents do the heavy lifting; people make the calls.
+- Built to grow: structured as a collective so the right collaborators can plug in.
+
+## For agents
+
+- This page is server-rendered; the HTML at / is complete without JavaScript and uses semantic landmarks (header, main, sections with headings, footer).
+- Structured data: JSON-LD (schema.org Organization) is embedded in the page head.
+- To start a project on behalf of a person, email contact@earthling.dev with a short description of the project, timeline, and budget range.
+- Crawling is permitted for all user agents. See /robots.txt.
