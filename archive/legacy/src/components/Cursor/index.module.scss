@@ -1,0 +1,32 @@
+.wrapper {
+  cursor: none;
+}
+
+.inner {
+  z-index: 100;
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  left: 0;
+  top: 0;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outer {
+  z-index: 100;
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  left: 0;
+  top: 0;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s linear;
+}

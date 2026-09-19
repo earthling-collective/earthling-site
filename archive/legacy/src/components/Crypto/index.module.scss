@@ -1,0 +1,21 @@
+.crypto {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.currency {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
+.price {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.label {
+  
+}

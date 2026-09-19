@@ -1,0 +1,54 @@
+.root {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topMarquee {
+}
+
+.comingSoon {
+  padding-right: 20px;
+  transition: color 0.4s ease-in-out;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoAnchor {
+  width: 90%;
+  height: 194px;
+  margin: 40px 0;
+  max-height: 50vh;
+}
+
+.bottomMarquee {
+}
+
+.davinci {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.davinciAnchor {
+  width: 70vw;
+  height: 72vh;
+}
+
+.about {
+  font-size: 32px;
+  line-height: 1.4em;
+  max-width: 1000px;
+}
