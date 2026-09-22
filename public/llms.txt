@@ -7,7 +7,8 @@
 - GitHub: https://github.com/earthling-collective
 - Open-source design system: https://ui.earthling.dev (source: https://github.com/earthling-dev/earthling-ui, MIT)
 - Status: open for new projects
-- Structure: an agency built as a collective. Currently run by its founder, Steven Frady, with collaborators joining as work grows.
+- Structure: a collective, founded by Steven Frady, with member designers, engineers and artists joining as the work grows.
+- Free tools: https://tools.earthling.dev (source: https://github.com/earthling-collective/earthling-tools, MIT)
 
 ## Services
 
@@ -16,7 +17,7 @@
 - Engineering: React, TypeScript, and the modern web platform. Fast, accessible, and structured so the next person or agent can pick it up.
 - Creative technology: WebGL, shaders, generative systems, and motion.
 - Brand & identity: names, marks, and visual language that hold up across product surfaces.
-- Open source: Earthling UI and the rest of the stack are open to use, fork, and remix.
+- Open source: Earthling UI, Earthling Tools and the rest of the stack are open to use, fork, and remix.
 
 ## Approach
 

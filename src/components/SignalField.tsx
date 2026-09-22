@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Mesh, Program, Renderer, Triangle } from "ogl";
 import { signalFragment, signalVertex } from "./signal-shaders";
+import { accentAt } from "../accent";
 
 type SignalFieldStatus = "ready" | "unavailable";
 
@@ -95,6 +96,7 @@ export function SignalField({
       pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.055;
       pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.055;
       program.uniforms.uTime.value = elapsed * 0.001;
+      program.uniforms.uAccent.value.set(accentAt(now));
       program.uniforms.uPointer.value[0] = pointerCurrent.x;
       program.uniforms.uPointer.value[1] = pointerCurrent.y;
       renderer.render({ scene: mesh });
@@ -149,6 +151,7 @@ export function SignalField({
             uResolution: { value: new Float32Array([1, 1]) },
             uPointer: { value: new Float32Array([0, 0]) },
             uTime: { value: 0 },
+            uAccent: { value: new Float32Array([0.94, 0.65, 0.42]) },
           },
         });
         if (!gl.getProgramParameter(program.program, gl.LINK_STATUS)) {

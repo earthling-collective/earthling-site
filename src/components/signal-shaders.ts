@@ -12,6 +12,7 @@ precision highp float;
 uniform vec2 uResolution;
 uniform vec2 uPointer;
 uniform float uTime;
+uniform vec3 uAccent;
 
 #define STRANDS 88
 
@@ -50,6 +51,8 @@ void main() {
   float twistSlope = 1.47 + 0.5332 * cos(x * 1.72 + t)
                    + uPointer.x * 0.16 * pointerSlope;
 
+  // Deepen the page accent so the band stays vivid against the dark strands
+  vec3 accent = uAccent * uAccent * 1.35;
   vec3 color = vec3(0.035, 0.039, 0.043);
   float body = exp(-pow(abs(uv.y - center) / (span + 0.08), 2.25));
   color += vec3(0.018, 0.025, 0.031) * body * aperture;
@@ -79,7 +82,7 @@ void main() {
 
     float goldBand = exp(-abs(s - 0.31) * 62.0) + exp(-abs(s + 0.67) * 76.0);
     float dispersion = smoothstep(0.05, 0.82, sin(x * 1.55 - s * 2.0 + 0.8));
-    color += vec3(1.0, 0.39, 0.075) * core * goldBand * dispersion * 0.72 * edgeFade;
+    color += accent * core * goldBand * dispersion * 0.72 * edgeFade;
   }
 
   float caustic = exp(-abs(cos(twist)) * 34.0) * aperture * edgeFade;

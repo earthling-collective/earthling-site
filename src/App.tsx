@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { Button } from "earthling-ui/button";
+import { Input } from "earthling-ui/input";
 import { Slider } from "earthling-ui/slider";
 import { Switch } from "earthling-ui/switch";
 import { SignalField } from "./components/SignalField";
@@ -15,6 +16,8 @@ const githubUrl = "https://github.com/earthling-collective";
 const libraryUrl = "https://ui.earthling.dev";
 const librarySourceUrl = "https://github.com/earthling-dev/earthling-ui";
 const founderUrl = "https://stevenfrady.com";
+const toolsUrl = "https://tools.earthling.dev";
+const toolsSourceUrl = "https://github.com/earthling-collective/earthling-tools";
 const contactEmail = "contact@earthling.dev";
 const contactMailto = `mailto:${contactEmail}?subject=${encodeURIComponent("New project")}`;
 const agentsUrl = "/llms.txt";
@@ -321,6 +324,78 @@ function LibrarySpecimen() {
   );
 }
 
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+const camelCase = (text: string) =>
+  text
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean)
+    .map((word, i) => (i ? word[0].toUpperCase() + word.slice(1) : word))
+    .join("");
+
+function ToolsSpecimen() {
+  const [text, setText] = useState("Earthling Collective");
+  const [hash, setHash] = useState("");
+  useEffect(() => {
+    let live = true;
+    crypto.subtle
+      .digest("SHA-256", new TextEncoder().encode(text))
+      .then((digest) => {
+        if (live)
+          setHash(
+            Array.from(new Uint8Array(digest), (b) =>
+              b.toString(16).padStart(2, "0"),
+            ).join(""),
+          );
+      });
+    return () => {
+      live = false;
+    };
+  }, [text]);
+  const rows = [
+    ["slug", slugify(text)],
+    ["camelCase", camelCase(text)],
+    ["sha-256", hash],
+  ];
+  return (
+    <div className="specimen" data-reveal>
+      <div className="specimen-heading mono">
+        <span>Earthling Tools</span>
+        <span>
+          <span className="status-dot" aria-hidden="true" />
+          Runs in your browser
+        </span>
+      </div>
+      <div className="specimen-stage specimen-stage--tools">
+        <Input
+          className="specimen-input"
+          aria-label="Text to transform"
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+        />
+        <div className="specimen-rows" aria-live="polite">
+          {rows.map(([label, value]) => (
+            <div className="specimen-row" key={label}>
+              <span>{label}</span>
+              <code>{value}</code>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="specimen-controls">
+        <div className="radius-label mono">
+          <span>Every keystroke stays on your machine</span>
+          <output>{text.length} chars</output>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function useReveal() {
   useEffect(() => {
     const elements = Array.from(
@@ -381,10 +456,10 @@ export default function App() {
       </div>
       <header className="site-header" data-scrolled={scrolled || undefined}>
         <div className="container header-inner">
-          <a className="identity" href="#top" aria-label="Earthling Digital home">
+          <a className="identity" href="#top" aria-label="Earthling Collective home">
             <Mark />
             <span className="identity-name">
-              earthling<span className="identity-sub">digital</span>
+              earthling<span className="identity-sub">collective</span>
             </span>
           </a>
           <nav aria-label="Main navigation">
@@ -670,8 +745,59 @@ export default function App() {
               </div>
               <LibrarySpecimen />
             </div>
+            <div className="project">
+              <div className="project-copy">
+                <div className="project-meta mono" data-reveal>
+                  <span>002</span>
+                  <span>Tool library</span>
+                  <span>Open source</span>
+                </div>
+                <h3 data-reveal style={{ "--delay": "60ms" } as CSSProperties}>
+                  Earthling Tools
+                </h3>
+                <p data-reveal style={{ "--delay": "120ms" } as CSSProperties}>
+                  Converters, decoders and generators for everyday development
+                  work, with no ads and no sign-up. Every tool runs in the
+                  browser, and the whole site is built from Earthling UI as a
+                  working demonstration of the system.
+                </p>
+                <div
+                  className="project-links"
+                  data-reveal
+                  style={{ "--delay": "180ms" } as CSSProperties}
+                >
+                  <Button asChild material="outline" size="lg">
+                    <a href={toolsUrl}>
+                      Use the tools <Arrow diagonal />
+                    </a>
+                  </Button>
+                  <a className="text-link" href={toolsSourceUrl}>
+                    Source <Arrow diagonal />
+                  </a>
+                </div>
+                <dl
+                  className="project-facts mono"
+                  data-reveal
+                  style={{ "--delay": "240ms" } as CSSProperties}
+                >
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>Next.js, Earthling UI</dd>
+                  </div>
+                  <div>
+                    <dt>License</dt>
+                    <dd>MIT</dd>
+                  </div>
+                  <div>
+                    <dt>Status</dt>
+                    <dd>Live</dd>
+                  </div>
+                </dl>
+              </div>
+              <ToolsSpecimen />
+            </div>
             <div className="work-note" data-reveal>
-              <span className="mono">002 — Your project</span>
+              <span className="mono">003 — Your project</span>
               <p>
                 The next case study on this page could be yours.{" "}
                 <a href="#contact" className="inline-link">
@@ -749,10 +875,10 @@ export default function App() {
                   handoff. Tight loops, real feedback, and work that ships.
                 </p>
                 <p>
-                  It is built as a collective. Today that is one person. The
-                  structure exists so that the right collaborators, human and
-                  otherwise, can plug in as the work grows, without the overhead
-                  of a traditional agency.
+                  It is built as a collective, and the first members have
+                  joined. The structure exists so that the right collaborators,
+                  human and otherwise, can plug in as the work grows, without
+                  the overhead of a traditional agency.
                 </p>
                 <a className="text-link" href={founderUrl}>
                   Meet the founder <Arrow diagonal />
@@ -825,7 +951,7 @@ export default function App() {
             <a href="#top" className="identity" aria-label="Back to top">
               <Mark />
               <span className="identity-name">
-                earthling<span className="identity-sub">digital</span>
+                earthling<span className="identity-sub">collective</span>
               </span>
             </a>
             <p className="mono">Independent by nature.</p>
@@ -843,6 +969,7 @@ export default function App() {
               <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
               <a href={githubUrl}>GitHub</a>
               <a href={libraryUrl}>Earthling UI</a>
+              <a href={toolsUrl}>Earthling Tools</a>
             </div>
           </nav>
           <p className="footer-legal mono">

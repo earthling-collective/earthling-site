@@ -1,6 +1,6 @@
 # Earthling Digital
 
-The public website for Earthling Digital, an independent, AI-native creative agency working across brand, product design, engineering, and creative technology. The agency is structured as a collective and currently run by Steven Frady.
+The public website for Earthling Digital, an independent, AI-native creative agency working across brand, product design, engineering, and creative technology. The agency is structured as a collective, founded by Steven Frady.
 
 The original site experiments are preserved in `archive/legacy`.
 

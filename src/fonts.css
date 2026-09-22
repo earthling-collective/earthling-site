@@ -19,3 +19,12 @@
   src: url("@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2")
     format("woff2");
 }
+
+/* Wordmark face shared with ui.earthling.dev and tools.earthling.dev */
+@font-face {
+  font-family: "Earthling Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("./display.otf") format("opentype");
+}
